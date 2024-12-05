@@ -1,27 +1,37 @@
-version: '3'
-
 volumes:
   pg_data:
   static:
+  media:
 
 services:
   db:
     image: postgres:13
+    env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
   backend:
+    image: kittygram_backend
     build: ./backend/
     env_file: .env
+    command: python manage.py collectstatic && cp -r /app/collected_static/. /backend_static/static/
+    volumes:
+      - static:/backend_static
+      - media:/backend_media
+
   frontend:
     env_file: .env
+    image: kittygram_frontend
     build: ./frontend/
-    command: cp -r /app/build/. /static/
+    command: cp -r /app/build/. /frontend_static/
     volumes:
-      - static:/static
+      - static:/frontend_static
+
   gateway:
+    image: kittygram_gateway
     build: ./nginx/
     env_file: .env
-    ports:
-      - 9000:80
     volumes:
-      - static:/static
+      - static:/staticfiles/
+      - media:/mediafiles/
+    ports:
+      - 8000:80

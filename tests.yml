@@ -1,0 +1,4 @@
+repo_owner: RemxD9
+kittygram_domain: https://github.com/RemxD9/kittygram_final.git
+taski_domain: https://github.com/RemxD9/taski-docker.git
+dockerhub_username: ${{ secrets.DOCKER_USERNAME }}
