@@ -61,7 +61,7 @@ jobs:
         with:
           context: ./backend/
           push: true
-          tags: remxd/taski_backend:latest
+          tags: remxd/kittygram_backend:latest
   frontend_tests:
     runs-on: ubuntu-latest
 
@@ -98,7 +98,7 @@ jobs:
         with:
           context: ./frontend/
           push: true
-          tags: remxd/taski_frontend:latest
+          tags: remxd/kittygram_frontend:latest
   build_gateway_and_push_to_docker_hub:
     name: Push gateway Docker image to DockerHub
     runs-on: ubuntu-latest
@@ -117,7 +117,7 @@ jobs:
         with:
           context: ./nginx/
           push: true
-          tags: remxd/taski_gateway:latest
+          tags: remxd/kittygram_gateway:latest
   send_message:
     runs-on: ubuntu-latest
     needs:
