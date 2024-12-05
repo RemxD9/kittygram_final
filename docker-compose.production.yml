@@ -1,0 +1,54 @@
+volumes:
+  pg_data:
+  static:
+  media:
+
+services:
+  db:
+    image: postgres:13
+    env_file: .env
+    restart: always
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  backend:
+    image: remxd/kittygram_backend:latest
+    env_file: .env
+    restart: always
+    volumes:
+      - static:/backend_static
+      - media:/backend_media
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  frontend:
+    image: remxd/kittygram_frontend:latest
+    env_file: .env
+    restart: always
+    volumes:
+      - static:/frontend_static
+    networks:
+      - app-network
+
+  gateway:
+    image: remxd/kittygram_gateway:latest
+    env_file: .env
+    restart: always
+    volumes:
+      - static:/staticfiles
+      - media:/backend_media
+    ports:
+      - 80:80
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
